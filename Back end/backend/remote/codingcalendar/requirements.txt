@@ -1,0 +1,6 @@
+django<2
+beautifulsoup
+pytz
+urllib3
+xmltodict
+re

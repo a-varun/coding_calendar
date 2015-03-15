@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Coding Calendar</title>
+	<link rel="stylesheet" type="text/css" href="assets/material/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" href="assets/material/material-wfont.min.css" >
+	<link rel="stylesheet" type="text/css" href="assets/material/ripples.min.css" >
+	<link rel="stylesheet" type="text/css" href="assets/material/snackbar.min.css" >
+
+	<!-- icon -->
+	<link rel="stylesheet" type="text/css" href="assets/icon/sprite-action-black.css">
+
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="assets/material/ripples.min.js"></script>
+    <script src="assets/material/material.min.js"></script>
+    <script src="//fezvrasta.github.io/snackbarjs/dist/snackbar.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+    
+</head>
+<body>
+	<div class="navbar navbar-inverse" style=" width:100%;">
+	    <div class="navbar-header">
+	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	        </button>
+	        <a class="navbar-brand" href="index.html">Coding Calendar</a>
+	    </div>
+	    <div class="navbar-collapse collapse navbar-inverse-collapse">
+	        <ul class="nav navbar-nav">
+	            <li><a href="contestfeed.html">Contest Feed</a></li>
+	            <li class="active"><a href="preferences.html">Filtered View</a></li>
+	            <li><a href="javascript:void(0)">About</a></li>
+	        </ul>
+	    </div>
+	</div>
+		<ul class="nav nav-pills">
+		  <li role="presentation" id="codechef"><a href="#">Codechef</a></li>
+		  <li role="presentation" id="hackerrank"><a href="#"> Hackerrank</a> </li>
+		  <li role="presentation" id="codeforces"><a href="#">Codeforces</a></li>
+		  <li role="presentation" id="topcoder"><a href="#">Topcoder</a></li>
+		</ul>
+		<div id="codechefblock"></div>
+		<div id="codeforcesblock"></div>
+		<div id="hackerrankblock"></div>
+		<div id="topcoderblock"></div>
+
+		<script type="text/javascript">
+
+
+
+		var correctstring = "' style='float: right; color: green;'><i class='clock mdi-action-alarm-on' data-content='Your preferences saved!' data-toggle='snackbar' data-timeout='5'></i></span></h4>";
+            var falsestring = "' style='float: right; color: red;'><i class='clock mdi-action-alarm-off' data-content='Your preferences saved!' data-toggle='snackbar' data-timeout='5'></i></span></h4>"
+			function hideall(){
+				$('#codechefblock').fadeOut(10);
+				$('#topcoderblock').fadeOut(10);
+				$('#codeforcesblock').fadeOut(10);
+				$('#hackerrankblock').fadeOut(10);
+				$('#codechef').removeClass('active');
+				$('#codeforces').removeClass('active');
+				$('#hackerrank').removeClass('active');
+				$('#topcoder').removeClass('active');
+			}
+
+			function render() {
+		        var result = window.localStorage.codingcalendardata;
+		        result = JSON.parse(result);
+		        var cccount = result.codechefcount;
+		        var tccount = result.topcodercount;
+		        var hrcount = result.hackerrankcount;
+		        var cfcount = result.codeforcescount;
+		        var ccdata = result.codechef;
+		        var tcdata = result.topcoder;
+		        var hrdata = result.hackerrank;
+		        var cfdata = result.codeforces;
+		        for(var i=0;i<cccount;i++){
+        				var result = window.localStorage.getItem(ccdata[i].ID);
+
+        	            var htmlcontent = "<div class='jumbotron'><h4>" +ccdata[i].name+
+                      " <span class='setalarm icon-preview' id='" + ccdata[i].ID + ( ( result == "true") ? correctstring : falsestring ) +
+                      "Start Time : "+ccdata[i].starttime+"<br> End Time : "+ ccdata[i].endtime+
+                      "<br>"+" URL : "+ccdata[i].URL+
+                       "</div>";
+                       $("#codechefblock").append(htmlcontent);
+		        }
+		        for(var i=0;i<tccount;i++){
+        				var result = window.localStorage.getItem(tcdata[i].ID);
+        	            var htmlcontent = "<div class='jumbotron'><h4>" +tcdata[i].name+
+                      " <span class='setalarm icon-preview' id='" + tcdata[i].ID + ( ( result == "true") ? correctstring : falsestring ) +
+                      "Start Time : "+tcdata[i].starttime+"<br> End Time : "+ tcdata[i].endtime+
+                      "<br>"+" URL : "+tcdata[i].URL+
+                       "</div>";
+                       $("#topcoderblock").append(htmlcontent);
+		        }
+			     for(var i=0;i<hrcount;i++){
+        				var result = window.localStorage.getItem(hrdata[i].ID);
+        	            var htmlcontent = "<div class='jumbotron'><h4>" +hrdata[i].name+
+                      " <span class='setalarm icon-preview' id='" + hrdata[i].ID + ( ( result == "true") ? correctstring : falsestring ) +
+                      "Start Time : "+hrdata[i].starttime+"<br> End Time : "+ hrdata[i].endtime+
+                      "<br>"+" URL : "+hrdata[i].URL+
+                       "</div>";
+                       $("#hackerrankblock").append(htmlcontent);
+		        }
+		        for(var i=0;i<cfcount;i++){
+        				var result = window.localStorage.getItem(cfdata[i].ID);
+        	            var htmlcontent = "<div class='jumbotron'><h4>" +cfdata[i].name+
+                      " <span class='setalarm icon-preview' id='" + cfdata[i].ID + ( ( result == "true") ? correctstring : falsestring ) +
+                      "Start Time : "+cfdata[i].starttime+"<br> End Time : "+ cfdata[i].endtime+
+                      "<br>"+" URL : "+cfdata[i].URL+
+                       "</div>";
+                       $("#codeforcesblock").append(htmlcontent);
+		        }
+		        hideall();
+		        $('#codechefblock').fadeIn(1000);
+		        $('#codechef').addClass('active');
+				$(".setalarm").click(function() {
+		                if( $(this).children('.clock').hasClass('mdi-action-alarm-off') )
+		                {
+		                 $(this).children('.clock').removeClass('mdi-action-alarm-off').addClass('mdi-action-alarm-on'); 
+		                 $(this).css('color', 'green');
+		                 // code for setting the localStorage
+		                  alert( $(this).attr('id'));
+		                  window.localStorage.setItem($(this).attr('id'), 'true'); 
+		                }
+		                else
+		                {
+		                  $(this).children('.clock').removeClass('mdi-action-alarm-on').addClass('mdi-action-alarm-off'); 
+		                 $(this).css('color', 'red');
+		                 // removing from the localStorage
+		                 window.localStorage.setItem($(this).attr('id'), null); 
+		                }
+		            });
+
+			}
+			$('#codechef').click(function(){
+		     	 	hideall();
+		     	 	$('#codechefblock').fadeIn(1000);
+		     	 	$('#codechef').addClass('active')
+		     	 });
+			$('#topcoder').click(function(){
+		     	 	hideall();
+		     	 	$('#topcoderblock').fadeIn(1000);
+		     	 	$('#topcoder').addClass('active')
+		     	 });
+			$('#hackerrank').click(function(){
+		     	 	hideall();
+		     	 	$('#hackerrankblock').fadeIn(1000);
+		     	 	$('#hackerrank').addClass('active')
+		     	 });
+			$('#codeforces').click(function(){
+		     	 	hideall();
+		     	 	$('#codeforcesblock').fadeIn(1000);
+		     	 	$('#codeforces').addClass('active')
+		     	 });
+			render();
+		</script>
+</body>
+</html>
